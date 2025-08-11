@@ -1,0 +1,28 @@
+package com.example.micro_smartcontract.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.http.HttpService;
+
+@Configuration
+public class BlockchainConfig {
+
+    @Bean
+    public Web3j web3j() {
+        // ✅ URL de Ganache local ou d’un provider Infura, Alchemy, etc.
+        return Web3j.build(new HttpService("http://127.0.0.1:7545"));
+    }
+
+    @Bean
+    public Credentials credentials() {
+        // ✅ Clé privée d’un compte Ganache
+        return Credentials.create("0x660f09f01b4ac944dbab30be93661a3d267f2833496d3f7ca103e7b6cb034842"); // ⚠️ Ne jamais exposer ça en prod
+    }
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}

@@ -1,0 +1,63 @@
+package com.example.micro_patient.Service;
+
+import com.example.micro_patient.Repository.patientrepo;
+import com.example.micro_patient.entity.Patient;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+@Service
+
+@Transactional
+
+public class patientservice implements patientinter{
+    private final patientrepo patientRepository;
+
+    @Autowired
+
+
+    public patientservice(patientrepo patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    @Override
+    public Patient savePatient(Patient patient) {
+        System.out.println(">> Patient reçu : " + patient);
+        return patientRepository.save(patient);
+    }
+
+    @Override
+    public void updatePatient(Patient patient) {
+        if (patient.getIdPatient() == null || !patientRepository.existsById(patient.getIdPatient())) {
+            throw new RuntimeException("Patient introuvable pour mise à jour");
+        }
+        patientRepository.save(patient);
+    }
+
+    @Override
+    public void deletePatient(long id) {
+        if (patientRepository.existsById(id)) {
+            patientRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Impossible de supprimer : patient introuvable avec ID: " + id);
+        }
+    }
+
+    @Override
+    public Patient getPatientById(long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Patient introuvable avec ID: " + id));
+    }
+
+    @Override
+    public List<Patient> getAllPatient() {
+        return patientRepository.findAll();
+    }
+    public Patient getPatientByNumeroDossier(String numeroDossier) {
+        return patientRepository.findByNumeroDossier(numeroDossier)
+                .orElseThrow(() -> new RuntimeException("Aucun patient trouvé avec ce numéro de dossier : " + numeroDossier));
+    }
+
+}

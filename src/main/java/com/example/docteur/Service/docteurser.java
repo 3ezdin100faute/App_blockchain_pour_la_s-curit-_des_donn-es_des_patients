@@ -1,0 +1,44 @@
+package com.example.docteur.Service;
+
+import com.example.docteur.entity.Docteur;
+import com.example.docteur.Repository.docteurRepo;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+@Service
+public class docteurser implements docteurinter {
+    private final docteurRepo docteurRepo;
+    public docteurser(docteurRepo docteurRepo) {
+        this.docteurRepo = docteurRepo;
+    }
+    @Override
+    public Docteur Ajouter(Docteur docteur) {
+        return docteurRepo.save(docteur);
+    }
+
+    @Override
+    public void Modifier(Docteur docteur) {
+        if (docteurRepo.existsById(docteur.getIdDocteur())) {
+            docteurRepo.save(docteur);
+
+    }
+    }
+
+    @Override
+    public void Supprimer(long id) {
+        if (docteurRepo.existsById(id)) {
+            docteurRepo.deleteById(id);
+        }
+
+    }
+
+    @Override
+    public Docteur getdocteur(long id) {
+        return docteurRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Docteur> getAlldocteur() {
+        return docteurRepo.findAll();
+    }
+}

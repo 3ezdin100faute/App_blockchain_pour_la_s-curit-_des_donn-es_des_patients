@@ -1,0 +1,4 @@
+package com.example.docteur.entity;
+
+public class Medicament {
+}

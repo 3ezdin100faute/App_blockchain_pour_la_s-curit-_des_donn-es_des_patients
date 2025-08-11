@@ -1,0 +1,36 @@
+package com.example.docteur.controller;
+import java.util.List;
+import com.example.docteur.entity.Docteur;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.example.docteur.Service.docteurser;
+@RestController
+@RequestMapping("/docteur")
+@AllArgsConstructor
+@CrossOrigin("*")
+public class docteurcontroller {
+    @Autowired
+    private final docteurser docteurserrvice;
+    @PutMapping("/update")
+    public void updatedocteur(Docteur docteur){
+        docteurserrvice.Modifier(docteur);
+    }
+    @PostMapping("/add")
+    public Docteur adddocteur(Docteur docteur){
+        return docteurserrvice.Ajouter(docteur);
+    }
+    @DeleteMapping("/delete/{id}")
+    public void deletedocteur(@PathVariable long id){
+        docteurserrvice.Supprimer(id);
+    }
+    @GetMapping("/get/{id}")
+    public Docteur getdocteur(@PathVariable long id){
+        return docteurserrvice.getdocteur(id);
+    }
+    @GetMapping("/getAll")
+    public List<Docteur> getAlldocteur(){
+        return docteurserrvice.getAlldocteur();
+    }
+
+}
